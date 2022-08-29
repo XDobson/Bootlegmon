@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="POKEMANS">
+    <meta name="author" content="Dwight Dubert and Xander Dobson">
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Grape+Nuts&family=Nunito&display=swap"
+        rel="stylesheet">
+    <!-- Google Fonts -->
+    <title>Pokémon</title>
+
+</head>
+
+<body>
+    <audio src="backgroundmusic.wav" id="backgroundMusic" style="visibility:hidden; position:absolute;" loop="true" >
+        <source src="backgroundmusic.wav">
+    </audio>
+    <content>
+
+        <!-- Starter screen, goes away after pokemon is chosen -->
+        <div id="chooseStarter">
+            <h1 id="starterText">Choose your starter!</h1>
+            <div id="starterImgs">
+                <img id="starter1" src="images/placeHolder.png">
+                <img id="starter2" src="images/placeHolder.png">
+                <img id="starter3" src="images/placeHolder.png">
+            </div>
+        </div>
+
+        <!-- Middle of the screen where the pokemon fight -->
+        <div id="fighting">
+            <h1 id="killCount">0</h1>
+            <div id="enemyHP">
+                <h1 id="enemyPokemonHP">HP:</h1>
+                <h1 id="enemyPokemonLvl">Lvl:</h1>
+                <h1 id="enemyPokemonName">Missingno.</h1>
+            </div>
+            <div id="enemyPokemon">
+                <img id="enemyPokemonImg" src="images/placeHolder.png" alt="">
+            </div>
+            <div id="playerPokemon">
+                <img id="playerPokemonImg" src="images/placeHolder.png" alt="">
+            </div>
+            <div id="playerHP">
+                <h1 id="playerPokemonHP">:HP</h1>
+                <h1 id="playerPokemonLvl">:Lvl</h1>
+                <h1 id="playerPokemonName">Missingno.</h1>
+            </div>
+        </div>
+        <!-- Right of the screen where the pokemon -->
+        <div id="party">
+            <div id="partySlot1">
+                <img onclick="switchTo(0,'partySlot1')" id="partySlot1Img"src="images/placeHolder.png" alt="1">
+                <h1 id="partySlot1HP">Missingno.</h1>
+            </div>
+            <div id="partySlot2">
+                <img onclick="switchTo(1,'partySlot2')" id="partySlot2Img" src="images/placeHolder.png" alt="2">
+                <h1 id="partySlot2HP">Missingno.</h1>
+
+            </div>
+            <div id="partySlot3">
+                <img onclick="switchTo(2,'partySlot3')" id="partySlot3Img" src="images/placeHolder.png" alt="3">
+                <h1 id="partySlot3HP">Missingno.</h1>
+
+            </div>
+            <div id="partySlot4">
+                <img onclick="switchTo(3,'partySlot4')" id="partySlot4Img" src="images/placeHolder.png" alt="4">
+                <h1 id="partySlot4HP">Missingno.</h1>
+
+            </div>
+            <div id="partySlot5">
+                <img onclick="switchTo(4,'partySlot5')" id="partySlot5Img" src="images/placeHolder.png" alt="5">
+                <h1 id="partySlot5HP">Missingno.</h1>
+
+            </div>
+            <!-- <div id="partySlot6">
+                    <img src="images/placeHolder.png" alt="6">
+                    <h1 id="partySlot6HP">hp</h1>
+                </div> -->
+        </div>
+        <div id="userInputs">
+            <div>
+                <div id="bag">
+                    <img id="bagImg" onclick="openBag()" src="images/bagButton.png" alt="images/placeHolder.png">
+                    <button id="bagButton1" onclick="usePotion()">Potion: 10</button>
+                    <button id="bagButton2" onclick="tryPokeball()">Pokéball: <span>∞<span></button>
+                    <button id="bagButton3" onclick="useSuperPotion()">Super Potion: 5</button>
+                    <button id="bagButton4" onclick="tryGreatball()">Greatball: 5</button>
+                </div>
+                <img id="closeBag" src="images/bagButtonOpen.png" alt="images/placeHolder.png" onclick="closeBag()">
+            </div>
+            <div id="attacks">
+                <button onclick="doAttack('enemy', 'attack1')" id="attack1">Attack 1</button>
+                <button onclick="doAttack('enemy', 'attack2')" id="attack2">Attack 2</button>
+                <button onclick="doAttack('enemy', 'attack3')" id="attack3">Attack 3</button>
+                <button onclick="doAttack('enemy', 'attack4')" id="attack4">Attack 4</button>
+            </div>
+        </div>
+        <div id="fightLog">
+            <div id="log"></div>
+            <div id="logGroup1">
+                <div onclick="showTypeAdvantage()" id="typeAdvatagesButton"><h1 id="buttonText">Type Advantages</h1></div>
+                <img id="typeAdvantagesImg" src="images/TypesAndWhatNot.png" alt="images/placeHolder.png">
+                <h1 id="logTitle"> Battle Log </h1>
+            </div>
+        </div>
+    </content>
+    
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

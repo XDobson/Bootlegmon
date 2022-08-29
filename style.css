@@ -1,0 +1,319 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Grape+Nuts&family=Nunito&display=swap');
+/* Imports go above this line */
+
+/* 
+font-family: 'Bebas Neue', cursive; Bold, header kind of text
+font-family: 'Grape Nuts', cursive; Cursive like text
+font-family: 'Nunito', sans-serif; Bold, header kind of text
+*/
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Grape Nuts', cursive; 
+    user-select: none;
+}
+
+body {
+    overflow-y: none;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+#chooseStarter {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    position: absolute;
+    min-width: 70%;
+    min-height: 40%;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background-color: #00000044;
+    z-index: 10;
+    
+    visibility: visible;
+}
+
+#starterImgs {
+    display: flex;
+    justify-content: space-around;
+    min-width: 100%;
+}
+
+#chooseStarter div img {
+    aspect-ratio: 1;
+    width: 100%;
+}
+
+#party {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #8e1414;
+    width: 17.5vw;
+    height: 80vh;
+    right: 0;
+    top: 0;
+}
+
+#party img{
+    aspect-ratio: 1;
+    max-width: 30%;
+}
+
+#partySlot1, #partySlot2, #partySlot3, #partySlot4, #partySlot5{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    visibility: hidden;
+}
+
+#partySlot1HP, #partySlot2HP, #partySlot3HP, #partySlot4HP, #partySlot5HP{
+    font-size: 25px;
+}
+
+#userInputs {
+    position: absolute;
+    background-color: #8e1414;
+    width: 17.5vw;
+    height: 80vh;
+    left: 0;
+    top: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#closeBag{
+    position: relative;
+    transform: translate(-50%, 0);
+    left: 50%;
+}
+
+#bag {
+    display: flex;
+    /* width: 17.5vw */
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    text-align: center;
+    margin: 20px;
+    aspect-ratio: 1;
+    border-radius: 5px;
+    background-color: brown;
+}
+
+#bag img {
+    visibility: visible;
+    position: absolute;
+    width: 70%;
+}
+
+#bag button {
+    padding: 2px;
+    width: 45%;
+    visibility: hidden
+}
+
+span {
+    margin: 0;
+    padding: 0;
+    font-size: 30px;
+    line-height: 0;
+}
+
+#closeBag {
+    visibility: hidden;
+}
+
+#closeBag{
+    padding: 2px;
+    width: 70%;
+}
+
+#attacks {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 50%;
+}
+
+#attack1, #attack2, #attack3, #attack4 {
+    border: black solid 2px;
+    margin: 0 5px;
+    text-align: center;
+    font-size: xx-large;
+}
+
+
+#fighting {
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background: rgb(1,120,1);
+    background: linear-gradient(200deg, rgba(1,120,1,1) 0%, rgba(44,155,44,1) 45%, rgba(142,235,142,1) 50%, rgba(167,255,167,1) 100%);
+    width: 65vw;
+    height: 80vh;
+    left: 17.5vw;
+}
+
+#fighting div img {
+    max-width: 50%;
+    max-height: 100%;
+    aspect-ratio: 1;
+}
+
+
+
+#enemyHP, #enemyPokemon, #playerPokemon, #playerHP{
+    display: flex;
+    aspect-ratio: 1;
+    width: 50%;
+    height: 50%;
+    padding: 5px;
+}
+
+#playerPokemon img, #enemyPokemon img{ 
+    min-width: 90%;
+    aspect-ratio: 1;
+}
+
+#playerPokemon { 
+    align-items: flex-end;
+    position: relative;
+    top: 0%;
+    transition-property: top;
+    transition-duration: 0.1s;
+    transition-timing-function: linear;
+    z-index: 1;
+}
+
+
+
+#enemyPokemon {
+    display: flex;
+    justify-content: end ;
+    align-items: flex-start;
+    z-index: 1;
+}
+
+#playerHP{
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: flex-end;
+}
+
+#enemyHP{
+    display: flex;
+    flex-direction: column;
+}
+
+#logTitle {
+    font-family: 'Bebas Neue', cursive; 
+    font-size: 4vw;
+    padding-top: 5px;
+    text-align: center;
+}
+
+#log {
+    font-size: 20px;
+    overflow-y: scroll;
+    width: 80%;
+    height: 100%;
+}
+
+#fightLog {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    background-color: rgb(203, 72, 72);
+    width: 100%;
+    height: 20vh;
+    bottom: 0;
+}
+
+#typeAdvatagesButton {
+    background-color: rgb(62, 17, 165);
+    width: auto;
+    height: 30%;
+    z-index: 1;
+    border-radius: 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+#buttonText {
+    font-family: 'Nunito', sans-serif; 
+    width: 100%;
+    font-size: 150%;
+    padding: 3px;
+}
+
+#typeAdvantagesButton:target {
+    background-color: rgb(34, 7, 96);
+}
+
+#typeAdvantagesImg {
+    visibility: hidden;
+    position: absolute;
+    left: 50%;
+    width: 80%;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 1;
+    border-radius: 50px;
+}
+
+#logGroup1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+}
+
+#partySlot1Img,
+#partySlot2Img,
+#partySlot3Img,
+#partySlot4Img,
+#partySlot5Img { 
+   min-width: 40%;
+   min-height: 40%;
+
+}
+
+#killCount {
+    position: absolute;
+    left: 50;
+    bottom: 50;
+    font-size: 50vh;
+    z-index: 0;
+    font-family: 'Bebas Neue';
+    color: #ff000022;
+}
+
+
+@media (max-width: 800px) {
+    #party {
+        width: 20vw;
+    } 
+    #userInputs {
+        width: 25vw;
+    }
+    #fighting {
+        width: 55vw;
+        left: 25vw
+    }
+}
