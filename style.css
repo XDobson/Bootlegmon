@@ -11,7 +11,7 @@ font-family: 'Nunito', sans-serif; Bold, header kind of text
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Grape Nuts', cursive; 
+    font-family: 'Grape Nuts', cursive;
     user-select: none;
 }
 
@@ -32,10 +32,32 @@ body {
     top: 20%;
     left: 50%;
     transform: translate(-50%, 0);
-    background-color: #00000044;
+    background-color: #000000DD;
     z-index: 10;
-    
+    border-radius: 10px;
+    color: white;
+
     visibility: visible;
+}
+#starterText{
+    color: white;
+}
+#cheaterCheater{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    visibility: hidden;
+
+    position: absolute;
+}
+#cheaterCheater input{
+    left: 50%;
+    text-align: center;
+}
+#cheaterCheater button{
+    width: 10vw;
+    font-size: 3vh;
 }
 
 #starterImgs {
@@ -62,12 +84,12 @@ body {
     top: 0;
 }
 
-#party img{
+#party img {
     aspect-ratio: 1;
     max-width: 30%;
 }
 
-#partySlot1, #partySlot2, #partySlot3, #partySlot4, #partySlot5{
+#partySlot1, #partySlot2, #partySlot3, #partySlot4, #partySlot5 {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -76,12 +98,12 @@ body {
     visibility: hidden;
 }
 
-#partySlot1HP, #partySlot2HP, #partySlot3HP, #partySlot4HP, #partySlot5HP{
+#partySlot1HP, #partySlot2HP, #partySlot3HP, #partySlot4HP, #partySlot5HP {
     font-size: 25px;
 }
 
 #userInputs {
-    position: absolute;
+    /* position: absolute; */
     background-color: #8e1414;
     width: 17.5vw;
     height: 80vh;
@@ -93,65 +115,79 @@ body {
     justify-content: space-around;
 }
 
-#closeBag{
-    position: relative;
-    transform: translate(-50%, 0);
-    left: 50%;
+#inventory {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 40vh;
+
 }
 
 #bag {
     display: flex;
-    /* width: 17.5vw */
+
+    flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     text-align: center;
-    margin: 20px;
-    aspect-ratio: 1;
+    margin: 5px;
     border-radius: 5px;
     background-color: brown;
+
+    height: 40vh;
+    width: 95%;
 }
 
-#bag img {
+#bagImg {
     visibility: visible;
     position: absolute;
-    width: 70%;
+    height: 25vh;
 }
 
-#bag button {
+#bagButton1, #bagButton2, #bagButton3, #bagButton4 {
     padding: 2px;
     width: 45%;
-    visibility: hidden
+    visibility: hidden;
 }
 
-span {
-    margin: 0;
-    padding: 0;
-    font-size: 30px;
-    line-height: 0;
+#bag div {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+#bag div img {
+    aspect-ratio: 1;
+    height: 6vh;
+
+    visibility: hidden;
+}
+.needRescaling {
+    scale: 3;
 }
 
 #closeBag {
     visibility: hidden;
-}
 
-#closeBag{
     padding: 2px;
-    width: 70%;
+    height: 12vh;
 }
 
 #attacks {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 50%;
+    height: 30vh;
 }
 
 #attack1, #attack2, #attack3, #attack4 {
     border: black solid 2px;
     margin: 0 5px;
     text-align: center;
-    font-size: xx-large;
+    font-size: 4vh;
 }
 
 
@@ -161,8 +197,8 @@ span {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    background: rgb(1,120,1);
-    background: linear-gradient(200deg, rgba(1,120,1,1) 0%, rgba(44,155,44,1) 45%, rgba(142,235,142,1) 50%, rgba(167,255,167,1) 100%);
+    background: rgb(1, 120, 1);
+    background: linear-gradient(200deg, rgba(1, 120, 1, 1) 0%, rgba(44, 155, 44, 1) 45%, rgba(142, 235, 142, 1) 50%, rgba(167, 255, 167, 1) 100%);
     width: 65vw;
     height: 80vh;
     left: 17.5vw;
@@ -176,7 +212,7 @@ span {
 
 
 
-#enemyHP, #enemyPokemon, #playerPokemon, #playerHP{
+#enemyHP, #enemyPokemon, #playerPokemon, #playerHP {
     display: flex;
     aspect-ratio: 1;
     width: 50%;
@@ -184,12 +220,12 @@ span {
     padding: 5px;
 }
 
-#playerPokemon img, #enemyPokemon img{ 
+#playerPokemon img, #enemyPokemon img {
     min-width: 90%;
     aspect-ratio: 1;
 }
 
-#playerPokemon { 
+#playerPokemon {
     align-items: flex-end;
     position: relative;
     top: 0%;
@@ -203,25 +239,25 @@ span {
 
 #enemyPokemon {
     display: flex;
-    justify-content: end ;
+    justify-content: end;
     align-items: flex-start;
     z-index: 1;
 }
 
-#playerHP{
+#playerHP {
     display: flex;
     flex-direction: column;
     justify-content: end;
     align-items: flex-end;
 }
 
-#enemyHP{
+#enemyHP {
     display: flex;
     flex-direction: column;
 }
 
 #logTitle {
-    font-family: 'Bebas Neue', cursive; 
+    font-family: 'Bebas Neue', cursive;
     font-size: 4vw;
     padding-top: 5px;
     text-align: center;
@@ -244,7 +280,7 @@ span {
     bottom: 0;
 }
 
-#typeAdvatagesButton {
+#typeAdvantagesButton {
     background-color: rgb(62, 17, 165);
     width: auto;
     height: 30%;
@@ -253,27 +289,29 @@ span {
     text-align: center;
     display: flex;
     align-items: center;
+
+    padding: 20px;
 }
 
+/* Refers only to the h1 inside of the typeAdvantagesButton, which is a div. whyyy? who knows. */
 #buttonText {
-    font-family: 'Nunito', sans-serif; 
+    font-family: 'Nunito', sans-serif;
     width: 100%;
-    font-size: 150%;
-    padding: 3px;
+    font-size: 100%;
 }
 
-#typeAdvantagesButton:target {
-    background-color: rgb(34, 7, 96);
-}
 
 #typeAdvantagesImg {
     visibility: hidden;
     position: absolute;
     left: 50%;
-    width: 80%;
-    transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-40%);
     z-index: 1;
     border-radius: 50px;
+
+    max-width: 80%;
+    max-height: 95vh;
+    min-height: 70vh;
 }
 
 #logGroup1 {
@@ -288,9 +326,9 @@ span {
 #partySlot2Img,
 #partySlot3Img,
 #partySlot4Img,
-#partySlot5Img { 
-   min-width: 40%;
-   min-height: 40%;
+#partySlot5Img {
+    min-width: 40%;
+    min-height: 40%;
 
 }
 
@@ -308,10 +346,12 @@ span {
 @media (max-width: 800px) {
     #party {
         width: 20vw;
-    } 
+    }
+
     #userInputs {
         width: 25vw;
     }
+
     #fighting {
         width: 55vw;
         left: 25vw

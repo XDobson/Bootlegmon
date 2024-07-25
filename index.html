@@ -19,23 +19,30 @@
 </head>
 
 <body>
-    <audio src="backgroundmusic.wav" id="backgroundMusic" style="visibility:hidden; position:absolute;" loop="true" >
+    <audio src="backgroundmusic.wav" id="backgroundMusic" style="visibility:hidden; position:absolute;" loop="true">
         <source src="backgroundmusic.wav">
     </audio>
     <content>
 
         <!-- Starter screen, goes away after pokemon is chosen -->
         <div id="chooseStarter">
-            <h1 id="starterText">Choose your starter!</h1>
+            <h1 id="starterText">Cho<span onclick="cheaterCheater()">o</span>se your starter!</h1>
             <div id="starterImgs">
                 <img id="starter1" src="images/placeHolder.png">
                 <img id="starter2" src="images/placeHolder.png">
                 <img id="starter3" src="images/placeHolder.png">
             </div>
+            <div id="cheaterCheater">
+                <h1>Custom Starter Button Found!</h1>
+                <h1>Enter your custom starter pokedex ID</h1>
+                <input type="text" id="cheaterInput">
+                <br>
+                <button onclick="cheaterConfirm()">Submit</button>
+            </div>
         </div>
 
         <!-- Middle of the screen where the pokemon fight -->
-        <div id="fighting">
+        <div id="fighting" onclick="forceCloseTypeAdvantage()">
             <h1 id="killCount">0</h1>
             <div id="enemyHP">
                 <h1 id="enemyPokemonHP">HP:</h1>
@@ -57,7 +64,7 @@
         <!-- Right of the screen where the pokemon -->
         <div id="party">
             <div id="partySlot1">
-                <img onclick="switchTo(0,'partySlot1')" id="partySlot1Img"src="images/placeHolder.png" alt="1">
+                <img onclick="switchTo(0,'partySlot1')" id="partySlot1Img" src="images/placeHolder.png" alt="1">
                 <h1 id="partySlot1HP">Missingno.</h1>
             </div>
             <div id="partySlot2">
@@ -80,21 +87,32 @@
                 <h1 id="partySlot5HP">Missingno.</h1>
 
             </div>
-            <!-- <div id="partySlot6">
-                    <img src="images/placeHolder.png" alt="6">
-                    <h1 id="partySlot6HP">hp</h1>
-                </div> -->
         </div>
         <div id="userInputs">
-            <div>
+            <div id="inventory">
                 <div id="bag">
                     <img id="bagImg" onclick="openBag()" src="images/bagButton.png" alt="images/placeHolder.png">
-                    <button id="bagButton1" onclick="usePotion()">Potion: 10</button>
-                    <button id="bagButton2" onclick="tryPokeball()">Pokéball: <span>∞<span></button>
-                    <button id="bagButton3" onclick="useSuperPotion()">Super Potion: 5</button>
-                    <button id="bagButton4" onclick="tryGreatball()">Greatball: 5</button>
+
+                    <div>
+                        <img id="bagPokeballImg" class="needRescaling" src="images/pokeball.png" alt="images/placeHolder.png">
+                        <button id="bagButton1" onclick="tryPokeball()">Pokeball</button>
+                    </div>
+                    <div>
+                        <img id="bagGreatballImg" class="needRescaling" src="images/greatball.png" alt="images/placeHolder.png">
+                        <button id="bagButton2" onclick="tryGreatball()">Greatball: 5</button>
+
+                    </div>
+                    <div>
+                        <img id="bagPotionImg" src="images/potion.png" alt="images/placeHolder.png">
+                        <button id="bagButton3" onclick="usePotion()">Potion: 10</button>
+                    </div>
+                    <div>
+                        <img id="bagSuperPotionImg" src="images/superPotion.png" alt="images/placeHolder.png">
+                        <button id="bagButton4" onclick="useSuperPotion()">S.Potion: 5</button>
+                    </div>
+
+                    <img id="closeBag" src="images/bagButtonOpen.png" alt="images/placeHolder.png" onclick="closeBag()">
                 </div>
-                <img id="closeBag" src="images/bagButtonOpen.png" alt="images/placeHolder.png" onclick="closeBag()">
             </div>
             <div id="attacks">
                 <button onclick="doAttack('enemy', 'attack1')" id="attack1">Attack 1</button>
@@ -106,13 +124,15 @@
         <div id="fightLog">
             <div id="log"></div>
             <div id="logGroup1">
-                <div onclick="showTypeAdvantage()" id="typeAdvatagesButton"><h1 id="buttonText">Type Advantages</h1></div>
+                <div onclick="showTypeAdvantage()" id="typeAdvantagesButton">
+                    <h1 id="buttonText">Type Advantages</h1>
+                </div>
                 <img id="typeAdvantagesImg" src="images/TypesAndWhatNot.png" alt="images/placeHolder.png">
                 <h1 id="logTitle"> Battle Log </h1>
             </div>
         </div>
     </content>
-    
+
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="script.js"></script>
