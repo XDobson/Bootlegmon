@@ -19,8 +19,8 @@
 </head>
 
 <body>
-    <audio src="backgroundmusic.wav" id="backgroundMusic" style="visibility:hidden; position:absolute;" loop="true">
-        <source src="backgroundmusic.wav">
+    <audio src="/audio/backgroundmusic.wav" id="backgroundMusic" style="visibility:hidden; position:absolute;" loop="true">
+        <source src="/audio/backgroundmusic.wav">
     </audio>
     <content>
 
@@ -38,6 +38,8 @@
                 <input type="text" id="cheaterInput">
                 <br>
                 <button onclick="cheaterConfirm()">Submit</button>
+                <h1>(Note: Gen2+ pokemon are available but wont be able to evolve.)</h1>
+                <h1>(Some later pokemon do not have sprites.)</h1>
             </div>
         </div>
 
@@ -99,7 +101,7 @@
                     </div>
                     <div>
                         <img id="bagGreatballImg" class="needRescaling" src="images/greatball.png" alt="images/placeHolder.png">
-                        <button id="bagButton2" onclick="tryGreatball()">Greatball: 5</button>
+                        <button id="bagButton2" onclick="tryGreatball()">Greatball: 0</button>
 
                     </div>
                     <div>
@@ -123,6 +125,11 @@
         </div>
         <div id="fightLog">
             <div id="log"></div>
+            <div id="soundSettings">
+                <h1 id="BGMButton" onclick="toggleBGMusic()">Music: ON</h1>
+                <h1 id="HSFXButton" onclick="toggleHitSfx()">HitSfx: ON</h1>
+                <h1 id="ISFXButton" onclick="toggleItemSfx()">ItemSfx: ON</h1>
+            </div>
             <div id="logGroup1">
                 <div onclick="showTypeAdvantage()" id="typeAdvantagesButton">
                     <h1 id="buttonText">Type Advantages</h1>

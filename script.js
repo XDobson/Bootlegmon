@@ -1,30 +1,46 @@
 // no brain
 // head empty
 
+//Recently fixed Bugs and added features:
+// the audio update
+// > Now start with 0 Greatballs to give them more value.
+// > Added enemy sound effect when attacking
+// > Attack sounds change in volume based on how much damage is dealt
+// > Added thud sound effect when a pokemon faints
+// > Added audio controls for the items, hits, and background music.
+// > Font size change for small screens: log, cheater menu, and HP
+
+
 // Known Bugs: 
 // > When a pokemon faints and is changed out, their sprite appears for a moment before the pokemon changes
-
-
-// [[[Bugs marked with a * are possibly fixed and need to be tested]]]
+// > The music loop is short, and there is a hiccup when looping.
+// > Pokemon with 0 hp remain in the party, can't be used, healed, or deleted.
 
 
 // Future Features Wish List:
 // Implementing Gen2
 // Party healing when out of battle
-// Turn indicator (your turn, their turn) to reduce spamming
+// Turn indicator (your turn, their turn) to reduce confusion
 
 window.canAttack = false;
 window.potions = 10
 window.superPotions = 5
-window.greatBalls = 5
+window.greatBalls = 0
 window.show = false
 window.isPokemonShiny = undefined
 window.isPlayerPokemonShiny = false
 window.isPokemonEvolved = false;
 window.killCount = 0
-let potion = new Audio("jumpsound.wav")
-let pokeball = new Audio("pokeball.wav")
-let boop = new Audio("boop.wav")
+itemSound = true;
+potion = new Audio("audio/potion.wav")
+pokeball = new Audio("audio/pokeball.wav")
+hitSound = true;
+boop = new Audio("audio/boop.wav")
+bonk = new Audio("audio/bonk.wav")
+wiff = new Audio("audio/wiff.wav")
+wap = new Audio("audio/wap.wav")
+document.getElementById("backgroundMusic").volume = 0.3;
+document.getElementById("backgroundMusic").loop = true;
 
 // Stores the player's pokemon when not in use
 window.playerParty = [
@@ -101,13 +117,10 @@ async function pickStarters() {
 // Sets the starter pokemon when the pokemon is clicked
 async function setStarter(chosenStarter) {
     document.getElementById("chooseStarter").style.visibility = "hidden";
-    document.getElementById("backgroundMusic").loop = true;
     document.getElementById("backgroundMusic").play();
-    document.getElementById("backgroundMusic").volume = 0.3;
     let img = await getPokemonBackImg(chosenStarter)
     document.getElementById("playerPokemonImg").setAttribute("src", img)
     let hp = await getPokemonHP(chosenStarter)
-    // await getPokemonHP(chosenStarter) 
     window.playerHP = hp
     window.playerMaxHp = hp
     document.getElementById("playerPokemonHP").innerText = window.playerHP + "/" + window.playerMaxHp + " :HP"
@@ -121,7 +134,7 @@ async function setStarter(chosenStarter) {
     await makeEnemyPokemon()
 }
 
-//allows player to enter an ID and to pick a custom pokemon. Not limited by gens.
+//allows player to enter an ID and to pick a custom pokemon. Not limited by gens. Note that pokemon later than 151 will break, as they aren't prevented from evolving into the wrong pokemon.
 function cheaterCheater() {
     document.getElementById("cheaterCheater").style.visibility = "visible"
     document.getElementById("starterText").style.visibility = "hidden"
@@ -134,10 +147,47 @@ function cheaterConfirm() {
     setStarter(document.getElementById("cheaterInput").value)
 }
 
+//Audio functions
+function toggleBGMusic() {
+    bgmButton = document.getElementById("BGMButton")
+    if (document.getElementById("backgroundMusic").paused) {
+        document.getElementById("backgroundMusic").play();
+        bgmButton.innerText = "Music: ON"
+        bgmButton.style.backgroundColor = "#62fb62"
+    } else {
+        document.getElementById("backgroundMusic").pause();
+        bgmButton.innerText = "Music: OFF"
+        bgmButton.style.backgroundColor = "#8e1414"
+    }
+}
+function toggleHitSfx() {
+    let hitButton = document.getElementById("HSFXButton")
+    if (hitSound == true) { 
+        hitSound = false 
+        hitButton.innerText = "HitSFX: OFF"
+        hitButton.style.backgroundColor = "#8e1414"
+    } else { 
+        hitSound = true 
+        hitButton.innerText = "HitSFX: ON"
+        hitButton.style.backgroundColor = "#62fb62"
+    }
+}
+function toggleItemSfx() {
+    if (itemSound == true) {
+        itemSound = false
+        document.getElementById("ISFXButton").innerText = "ItemSFX: OFF"
+        document.getElementById("ISFXButton").style.backgroundColor = "#8e1414"
+    } else {
+        itemSound = true
+        document.getElementById("ISFXButton").innerText = "ItemSFX: ON"
+        document.getElementById("ISFXButton").style.backgroundColor = "#62fb62"
+    }
+}
 
 // ===================================
 // RETURN DIFFERENT DATA ABOUT POKEMON
 // ===================================
+// returns the back image of a pokemon
 async function getPokemonBackImg(id, shiny) {
     const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
     const pokemonData = await axios.get(url);
@@ -147,6 +197,7 @@ async function getPokemonBackImg(id, shiny) {
         return (pokemonData.data.sprites.back_default);
     }
 }
+// returns the front image of a pokemon
 async function getPokemonFrontImg(id, shiny) {
     const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
     const pokemonData = await axios.get(url);
@@ -156,16 +207,19 @@ async function getPokemonFrontImg(id, shiny) {
         return (pokemonData.data.sprites.front_default);
     }
 }
+// returns the HP of a pokemon by ID
 async function getPokemonHP(id) {
     const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
     const pokemonData = await axios.get(url);
     return (pokemonData.data.stats[0].base_stat);
 }
+// returns the name of a pokemon by ID
 async function getName(id) {
     const url = 'https://pokeapi.co/api/v2/pokemon/' + id;
     const pokemonData = await axios.get(url);
     return capitalizeFirstLetter(pokemonData.data.species.name)
 }
+// updates the player's attacks with 4 random attacks a caught pokemon can learn, via ID. Returns a pokemon's hp stat (???)
 async function getPokemonAttacks(id) {
     const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
     const pokemonData = await axios.get(url);
@@ -197,6 +251,7 @@ async function getPokemonAttacks(id) {
 
     return (pokemonData.data.stats[0].base_stat);
 }
+// updates the attackArray with 4 random attacks a caught pokemon can learn, via ID.
 async function getNewPokemonMoves(id) {
     const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
     const pokemonData = await axios.get(url);
@@ -390,75 +445,71 @@ async function doAttack(target, attack) {
             currentAttack = window.attack4
         }
     }
-    let chance = Math.floor((Math.random() * 10) + 1)
-    if (chance == 1) { //miss chance
-        dmg = 0
-
-    } else if (chance == 10) { //crit chance
-        dmg = Math.floor((Math.random() * 15) + 15)
-        if (window.isPokemonEvolved == true) { //extra dmg if pokemon has evolved
-            dmg += Math.floor((Math.random() * 5) + 10)
-        }
-    } else { //normal attack
-        dmg = Math.floor((Math.random() * 5) + 5)
-        if (window.isPokemonEvolved == true) { //extra dmg if pokemon has evolved
-            dmg += Math.floor((Math.random() * 5) + 5)
-        }
-    }
     // Checks if the player is attacking
     if (target == "enemy" && window.canAttack == true) {
+        let chance = Math.floor((Math.random() * 10) + 1)
+        if (chance == 1) { //missed attack
+            dmg = 0
+        } else if (chance == 10) { //crit attack
+            dmg = Math.floor((Math.random() * 15) + 15)
+            if (window.isPokemonEvolved == true) { //extra dmg if pokemon has evolved
+                dmg += Math.floor((Math.random() * 5) + 10)
+            }
+        } else { //normal attack
+            dmg = Math.floor((Math.random() * 5) + 5)
+            if (window.isPokemonEvolved == true) { //extra dmg if pokemon has evolved
+                dmg += Math.floor((Math.random() * 5) + 5)
+            }
+        }
         window.canAttack = false;
-        boop.play()
+
         jiggle("player")
 
-        // Call that HUGE if statement below - adds bonus dmg based on type of move vs type of pokemon
-        bonus = await checkEffective(currentAttack, "enemy", 0)
-        bonus += await checkEffective(currentAttack, "enemy", 1)
+        bonus = 0
+        if (dmg != 0) { // if attack misses, bonus stays 0
+            // Call that HUGE if statement below - adds bonus dmg based on type of move vs type of pokemon
+            bonus = await checkEffective(currentAttack, "enemy", 0)
+            bonus += await checkEffective(currentAttack, "enemy", 1)
+        }
 
-        if ((dmg + bonus) < window.enemyHP) {
-            // Enemy doesnt faint and takes dmg
-            if (dmg == 0) {
-                if (dmg + bonus < 0) {
-                    bonus = dmg - (dmg * 2)
-                }
+        if ((dmg + bonus) < window.enemyHP) { // checks to see if enemy doesn't faint from this attack.
+            if (dmg == 0) { // attack misses.
+                if (hitSound == true) { wiff.play() }
+                debugDmg = dmg + bonus
+                console.log("Damage Dealt: " + debugDmg + "(" + dmg + "+" + bonus + ") (bonus will be set to 0 due to miss)");
+                bonus = 0 //atk missed, bonus is NULL
                 document.getElementById("log").innerHTML += await getName(window.playerID) + " missed! <br>"
-                scrollToBottom()
-            } else if (dmg >= 15) {
-                // Failsafe for bonus being less than dmg is positive, makes bonus+dmg=0 so pokemon don't heal from especially ineffective attacks 
-                if (dmg + bonus < 0) {
+            } else { //attack hits
+
+                if (dmg + bonus < 0) { //makes sure bonus + dmg isn't negative. Prevents healing enemy.
                     bonus = dmg - (dmg * 2)
                 }
-                window.enemyHP -= dmg + bonus
+                //sound effect changes volume based on how much damage is dealt, between 0.1 and 1, linearly scaled from 0 to 15 dmg.
+                boop.volume = 0.1 + (Math.min(dmg + bonus, 15) / 15) * (1 - 0.1)
+                if (hitSound == true) { boop.play() }
+
                 debugDmg = dmg + bonus
                 console.log("Damage Delt: " + debugDmg + "(" + dmg + "+" + bonus + ")");
-                document.getElementById("log").innerHTML += await getName(window.enemyID) + " has been hit by " + currentAttack + "! (CRITICAL!!!) <br>"
-                if (bonus > 0) {
-                    document.getElementById("log").innerHTML += " * * It was super effective! * * <br>"
-                } else if (bonus < 0) {
-                    document.getElementById("log").innerHTML += " * * It wasn't very effective.. * * <br>"
+                if (dmg >= 15) { // Crit check
+                    document.getElementById("log").innerHTML += await getName(window.enemyID) + " has been hit by " + currentAttack + "! (CRITICAL!!!) <br>"
+                } else {
+                    document.getElementById("log").innerHTML += await getName(window.enemyID) + " has been hit by " + currentAttack + "! <br>"
                 }
-                scrollToBottom()
-                window.canAttack = false;
-            } else {
-                // Failsafe for bonus being less than dmg is positive, makes bonus+dmg=0 so pokemon don't heal from especially ineffective attacks 
-                if (dmg + bonus < 0) {
-                    bonus = dmg - (dmg * 2)
-                }
-                window.enemyHP -= dmg + bonus
-                debugDmg = dmg + bonus
-                console.log("Damage Delt: " + debugDmg + "(" + dmg + "+" + bonus + ")");
-                document.getElementById("log").innerHTML += await getName(window.enemyID) + " has been hit by " + currentAttack + "! <br>"
-                if (bonus > 0) {
+                if (bonus > 0) { //bonus dmg check
                     document.getElementById("log").innerHTML += " * * It was super effective! * * <br>"
                 } else if (bonus < 0) {
                     document.getElementById("log").innerHTML += " * * It wasn't very effective.. * * <br> "
                 }
-                scrollToBottom()
-                window.canAttack = false;
+
             }
-        } else if (dmg > 0) {
-            // Enemy faints
-            window.canAttack = false
+
+            scrollToBottom()
+            window.enemyHP -= dmg + bonus
+            document.getElementById("enemyPokemonHP").innerText = "HP: " + window.enemyHP
+            setTimeout(doAttack, 1000, "player");//retaliate if alive
+
+        } else {// Enemy faints
+            if (hitSound == true) { wap.play() }
             document.getElementById("log").innerHTML += await getName(window.enemyID) + " has been hit by " + currentAttack + " and fainted! <br>"
             scrollToBottom()
             document.getElementById("enemyPokemonHP").innerText = "HP: Fainted!"
@@ -488,81 +539,79 @@ async function doAttack(target, attack) {
                     document.getElementById("bagButton3").innerHTML = "Potion: " + window.potions
                     scrollToBottom()
                 }
+
             }
+
+            //make a pokemon 2 seconds after the last one dies
+            //allow player to attack 3 seconds after the last one dies
             setTimeout(makeEnemyPokemon, 2000);
-        }
-        //"if enemy is visible, it hasn't fainted, so attack player"
-        if (document.getElementById("enemyPokemonImg").style.visibility == "visible") {
-            document.getElementById("enemyPokemonHP").innerText = "HP: " + window.enemyHP
-            setTimeout(doAttack, 1000, "player");
-        } else {
-            //timeout to prevent player from attacking before enemy is visible, and bugging out the game
-            setTimeout(() => {
-                window.canAttack = true
-            }, 3000);
+            setTimeout(() => { window.canAttack = true }, 3000);
         }
     }
 
     // Detects if enemy attacks player
     else if (target == "player") {
         let chance = Math.floor((Math.random() * 10) + 1)
-        if (chance == 1) {
+        if (chance == 1) { // missed attack
             dmg = 0
-        } else if (chance == 10) {
+        } else if (chance == 10) { // crit attack
             dmg = Math.floor((Math.random() * 15) + 10)
-        } else {
+        } else { // normal attack
             dmg = Math.floor((Math.random() * 5) + 5)
         }
+
+        // add a sound effect here when the enemy attacks
         jiggle("enemy")
-        currentAttack = await getEnemyMove(window.enemyID)
+        currentAttack = await getEnemyMove(window.enemyID) // chooses random moves from ALL of the moves enemy can know.
 
-        bonus = await checkEffective(currentAttack, "player", 0)
-        bonus += await checkEffective(currentAttack, "player", 1)
+        bonus = 0
+        if (dmg != 0) { // if attack misses, bonus stays 0
+            // Call that HUGE if statement below - adds bonus dmg based on type of move vs type of pokemon.
+            bonus = await checkEffective(currentAttack, "player", 0)
+            bonus += await checkEffective(currentAttack, "player", 1)
+        }
 
-        if ((dmg + bonus) < window.playerHP) {
-            window.playerHP -= dmg + bonus
-            document.getElementById("playerPokemonHP").innerText = window.playerHP + "/" + window.playerMaxHp + " :HP"
-            window.canAttack = true
-
-            if (dmg == 0) {
-                if (dmg + bonus < 0) {
-                    bonus = dmg - (dmg * 2)
-                }
+        if ((dmg + bonus) < window.playerHP) { // checks to see if player doesn't faint from this attack.
+            if (dmg == 0) { // attack misses.
+                if (hitSound == true) { wiff.play() }
+                debugDmg = dmg + bonus
+                console.log("Damage Dealt to player: " + debugDmg + "(" + dmg + "+" + bonus + ") (bonus will be set to 0 due to miss)");
+                bonus = 0 //atk missed, bonus is NULL
                 document.getElementById("log").innerHTML += await getName(window.enemyID) + " missed! <br>"
-                scrollToBottom()
-            } else if (dmg >= 15) {
-                if (dmg + bonus < 0) {
+            } else { // attack hits
+
+
+                if (dmg + bonus < 0) { //makes sure bonus + dmg isn't negative. Prevents healing enemy.
                     bonus = dmg - (dmg * 2)
                 }
+
+                //sound effect changes volume based on how much damage is dealt, between 0.1 and 1, linearly scaled from 0 to 15 dmg.
+                bonk.volume = 0.1 + (Math.min((dmg + bonus), 15) / 15) * (1 - 0.1)
+                if (hitSound == true) { bonk.play() }
+
                 debugDmg = dmg + bonus
                 console.log("Damage Dealt to player: " + debugDmg + "(" + dmg + "+" + bonus + ")");
-                document.getElementById("log").innerHTML += await getName(window.playerID) + " has been hit by " + currentAttack + "! (CRITICAL!!!) <br>"
-                if (bonus > 0) {
-                    document.getElementById("log").innerHTML += " * * It was super effective! * * <br>"
-                } else if (bonus < 0) {
-                    document.getElementById("log").innerHTML += " * * It wasn't very effective.. * * <br>"
+                if (dmg >= 15) { //Crit check
+                    document.getElementById("log").innerHTML += await getName(window.playerID) + " has been hit by " + currentAttack + "! (CRITICAL!!!) <br>"
+                } else {
+                    document.getElementById("log").innerHTML += await getName(window.playerID) + " has been hit by " + currentAttack + "! <br>"
                 }
-                scrollToBottom()
-            } else {
-                if (dmg + bonus < 0) {
-                    bonus = dmg - (dmg * 2)
-                }
-                debugDmg = dmg + bonus
-                console.log("Damage Dealt to player: " + debugDmg + "(" + dmg + "+" + bonus + ")");
-                document.getElementById("log").innerHTML += await getName(window.playerID) + " has been hit by " + currentAttack + "! <br>"
-                if (bonus > 0) {
+                if (bonus > 0) { //bonus dmg check
                     document.getElementById("log").innerHTML += " * * It was super effective! * * <br>"
                 } else if (bonus < 0) {
                     document.getElementById("log").innerHTML += " * * It wasn't very effective.. * * <br> "
                 }
-                scrollToBottom()
             }
-        } else {
-            if (dmg + bonus < 0) {
-                bonus = dmg - (dmg * 2)
-            }
+
+            scrollToBottom()
+            window.playerHP -= dmg + bonus
+            document.getElementById("playerPokemonHP").innerText = window.playerHP + "/" + window.playerMaxHp + " :HP"
+            window.canAttack = true
+
+        } else { // Player faints
+            if (hitSound == true) { wap.play() }
             debugDmg = dmg + bonus
-            console.log("Damage Dealt to player: " + debugDmg + "(" + dmg + "+" + bonus + ")");
+            console.log("Fainted! Dmg Dealt to player: " + debugDmg + "(" + dmg + "+" + bonus + ")");
             document.getElementById("log").innerHTML += await getName(window.playerID) + " has been hit by " + currentAttack + " and fainted! <br>"
             scrollToBottom()
             document.getElementById("playerPokemonHP").innerText = "Fainted! :HP"
@@ -575,7 +624,11 @@ async function doAttack(target, attack) {
     }
 }
 
-// Handles all bonus damage
+
+// SO many better ways this could've been done, but this works and changing it would take time
+// suggestion: make object for every type, and its properties are what it's effective against and what's effective against it. use that to calc if you get the bonus or not, and save a few hundred lines of code. jfc. - XD-7/24/21
+
+// Checks if the attack is effective against the target, returns bonus damage
 async function checkEffective(currentAttack, target, index) {
     // Bonus Damage 
     bonus = 0
@@ -976,7 +1029,7 @@ function jiggle(victim) {
 async function usePotion() {
     if (window.canAttack == true && window.potions > 0) {
         window.canAttack = false
-        potion.play()
+        if (itemSound == true) { potion.play() }
         window.potions--
         document.getElementById("bagButton3").innerHTML = "Potions: " + window.potions
         document.getElementById("log").innerHTML += "You used a Potion!<br>"
@@ -1006,7 +1059,7 @@ async function useSuperPotion() {
     if (window.canAttack == true && window.superPotions > 0) {
         window.canAttack = false
         window.superPotions--
-        potion.play()
+        if (itemSound == true) { potion.play() }
         document.getElementById("bagButton4").innerHTML = "Super Potions: " + window.superPotions
         document.getElementById("log").innerHTML += "You used a Super Potion!<br>"
         if (await window.playerMaxHp > (window.playerHP + 50)) {
@@ -1102,7 +1155,8 @@ async function tryEvolve() {
     pokemonData = await axios.get(url);
     // Prevents evolving into a pokemon that is on the black list, or base pokemon.
     // also allow eevee to evolve into one of the 3 eeveelutions, by allowing id 134.
-    if (!window.basePokemon.includes(id) || id == 134) {
+    // also prevent ids greater than 151 (gen 2+) from evolving, for users using the cheater menu.
+    if ((!window.basePokemon.includes(id) || id == 134) && id <= 151) {
         if (await getPokemonHP(id) <= window.playerMaxHp) {
 
             if (id == 134) { //checks to make sure this is/isn't an eevee
@@ -1205,7 +1259,7 @@ async function tryGreatball() {
 
 // handles catching pokemon and putting it in the party
 async function catchPokemon() {
-    pokeball.play()
+    if (itemSound == true) { pokeball.play() }
     document.getElementById("enemyPokemonImg").style.visibility = "hidden"
     if (window.playerParty[0].hp == undefined || window.playerParty[0].hp == 0) {
         syncToParty(0)
